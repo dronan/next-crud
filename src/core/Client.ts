@@ -1,10 +1,10 @@
 export default class Client {
     // # -> define private access
-    #id: number
+    #id: string
     #name: string
     #age: number
 
-    constructor(name: string, age: number, id: number = null) {
+    constructor(name: string, age: number, id: string = null) {
         this.#id = id
         this.#name = name
         this.#age = age
@@ -15,7 +15,7 @@ export default class Client {
     }
 
     // Getters
-    get id(): number {
+    get id(): string {
         return this.#id
     }
 
