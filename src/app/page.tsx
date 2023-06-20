@@ -1,11 +1,14 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import Client from "../core/Client";
 import Table from "../components/Table";
 import Layout from "../components/Layout";
 import Form from "../components/Form";
+import Button from "../components/Button";
 
 export default function Home() {
+  const [client, setClient] = useState<Client>(Client.empty())
+  const [visible, setVisible] = useState<'table' | 'form'>('table')
 
   const clients = [
     { name: 'João', age: 18, id: '1' },
@@ -16,7 +19,8 @@ export default function Home() {
 
 
   function selectedClient(client: Client) {
-    console.log(client.name)
+    setClient(client)
+    setVisible('form')
   }
 
 
@@ -24,6 +28,15 @@ export default function Home() {
     console.log(client.name)
   }
 
+  function saveClient(client: Client) {
+    console.log(client)
+    setVisible('table')
+  }
+
+  function newClient() { 
+    setClient(Client.empty())
+    setVisible('form')
+  }
 
   return (
     <div className={`
@@ -31,8 +44,16 @@ export default function Home() {
       bg-gradient-to-r from-blue-500 to-purple-500
       text-white`}>
       <Layout title="Register form">
-        <Table clients={clients} selectedClient={selectedClient} deletedClient={deletedClient}></Table>
-        <Form client={clients[0]} />
+        {visible === 'table' ? (
+        <>
+            <div className={`flex justify-end mt-4 mb-4`}>
+                <Button color="green" className="mr-6" onClick={newClient}>New client</Button>
+            </div>
+          <Table clients={clients} selectedClient={selectedClient} deletedClient={deletedClient}></Table>
+        </>
+        ) : (
+          <Form client={client} clientChanged={saveClient} cancel={() => setVisible('table')} />
+        )}
       </Layout>
     </div>
   )

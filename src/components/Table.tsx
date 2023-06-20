@@ -1,4 +1,4 @@
-import Client from "@/core/Client";
+import Client from "../core/Client";
 import { IconDelete, IconEdit } from "./Icons";
 import React from "react";
 
