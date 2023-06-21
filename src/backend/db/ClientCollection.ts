@@ -13,7 +13,7 @@ import { dataBase } from "../config";
 
 export default class ClientCollection implements RepositoryClient {
 
-    #conversor = {
+    private conversor = {
         toFirestore: (client: Client) => {
           return {
             name: client.name,
@@ -29,19 +29,35 @@ export default class ClientCollection implements RepositoryClient {
           },
         }
 
+    private collection = collection(dataBase, 'clients').withConverter(this.conversor)
+
     async save(client: Client): Promise<Client> {
-        return null
+      if (client?.id) {
+        await setDoc(
+          doc(dataBase, 'clients', client.id).withConverter(this.conversor),
+          client,
+        )
+        return client
+      } else {
+        const docRef = await addDoc(
+          this.collection,
+          client,
+        )
+        const doc = await getDoc(docRef)
+        return doc.data()
+      }
     }
 
     async delete(client: Client): Promise<void> {
-        return null
+        return deleteDoc(doc(dataBase, 'clients', client.id))
     }
 
     async getAll(): Promise<Client[]> {
-        return null
+      const clientsCol = this.collection
+      const clientsSnapshot = await getDocs(clientsCol)
+      const clientsList = clientsSnapshot.docs.map((doc) => doc.data()) ?? []
+      return clientsList
     }
 
-    #collection() {
-        return collection(dataBase, 'clientes').withConverter(this.#conversor)
-    }
+
 }
