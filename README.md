@@ -10,11 +10,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## About
+## Tech Stack
 
 This project utilizes the following technologies:
 
--Firebase
--NextJS
--React
--Tailwind CSS
+- Firebase
+- NextJS
+- React
+- Tailwind CSS
